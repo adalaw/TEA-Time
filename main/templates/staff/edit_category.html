@@ -1,0 +1,20 @@
+{% extends "main/layout.html" %}
+
+{% block title %}
+    Edit Category
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h3>Edit Category</h3>
+    <hr>
+        
+        <form method="POST" enctype="multipart/form-data"> 
+            {% csrf_token %}
+            <table class="new">
+                {{form.as_table}}
+            </table>
+            <button type="submit" class="btn btn-primary" id="create_submit">Update</button> 
+        </form> 
+</div>
+{% endblock %}

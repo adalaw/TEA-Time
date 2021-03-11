@@ -1,0 +1,95 @@
+/* new_product.html, edit_product.html */
+.new {
+    width: 80%;
+}
+
+.new label {
+    font-size: 18px;
+}
+  
+.new #id_name, .new #id_code, .new #id_description, .new #id_price, .new #id_category {
+    width: 100%;
+    padding: 5px 10px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+.new td {
+    padding: 10px 15px;
+}
+
+#create_submit {
+    margin: 20px 0px;
+}
+
+.remind {
+    color: red;
+}
+
+/* manage_products.html, category.html, manage_orders.html, report.html */
+
+.filter label {
+    font-size: 16px;
+}
+
+.filter input,  .filter select {
+    margin: 10px 10px;
+    padding: 5px 10px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+
+.all_products {
+    margin: 15px 0px;
+    border: 1px solid #ccc;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.all_products th, .all_products td {
+    padding: 5px 10px;
+    border-bottom: 1px solid #ccc;
+    vertical-align: top;
+}
+
+/* check icon */
+.bi {
+    color: green;
+}
+
+
+/* category.html */
+
+.add_category {
+    border: 1px solid #ccc;
+    padding: 15px 10px 5px;
+    margin: 20px 0px;
+}
+
+
+/* manage_orders.html */
+
+.delivered, .cancel {
+    font-size: 14px;
+    margin-left: 5px;
+}
+
+.status_btns {
+    width: 235px;
+}
+
+
+/* report.html */
+
+#report_sum {
+    margin: 18px;
+    font-size: 18px;
+    background-color: rgb(205, 240, 205);
+}
+
+.fix {
+    width: 120px;
+}

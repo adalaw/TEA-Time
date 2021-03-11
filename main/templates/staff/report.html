@@ -1,0 +1,48 @@
+{% extends "main/layout.html" %}
+{% load humanize %}
+
+{% block title %}
+    Report
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h3>Sales Report</h3>
+        <hr>
+       
+        <!-- ReportFilter -->
+        <form method="GET" class="filter">
+            {{filter.form}}
+            <button class="btn btn-primary btn-sm" type="submit">Search</button>
+        </form>
+
+        <table class="all_products">
+            
+            <!-- summary -->
+            <tr><td colspan="5" class="right" id="report_sum">
+                Sales Quantity: <strong>{{sales_qty}}</strong> ; Sales Amount: <strong>$ {{sales_amount|floatformat:2|intcomma}}</strong>
+            </td></tr>
+            
+            <tr>
+                <th class="fix">Date</th>
+                <th class="center">Store</th>
+                <th>Product</th>
+                <th class="center">Quantity</th>
+                <th class="right">Subtotal</th>
+            </tr>
+            {% for order in orders %}
+                {% for item in order.get_items %}
+                    <tr>
+                        <td class="fix">{{item.order.date_created.date}}</td>
+                        <td class="center">{{item.order.store}}</td>
+                        <td>{{item.product}} ({{item.hotOrCold}})</td>
+                        <td class="center">{{item.qty}}</td>
+                        <td class="right">{{item.get_subtotal|floatformat:2|intcomma}}</td>
+                    </tr>
+                {% endfor %}
+            {% endfor %}
+
+        </table>
+
+    </div>
+{% endblock %}

@@ -1,0 +1,66 @@
+{% extends "main/layout.html" %}
+
+{% block title %}
+    Manage Orders
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h3>Manage Orders</h3>
+    <hr>
+    
+    <!-- OrderFilter -->
+    <form method="GET" class="filter">
+        {{filter.form}}
+        <button class="btn btn-primary btn-sm" type="submit">Search</button>
+    </form>
+
+    <!-- oders -->
+    <table class="all_products">
+        <tr>
+            <th>Order No.</th>
+            <th>Store</th>
+            <th>Stay</th>
+            <th>Order Time</th>
+            <th>Customer</th>
+            <th>Phone</th>
+            <th>$</th>
+            <th>Items</th>
+            <th>Status</th>
+        </tr>
+        {% for order in orders %}
+            <tr class="orders" data-orderid="{{order.id}}">
+                <td>{{order.id}}</td>
+                <td>{{order.store}}</td>
+                <td>{{order.stay}}</td>
+                <td>{{order.date_created}}</td>
+                <!-- if no name and phone data -->
+                {% if order.customer.name == None %}
+                    <td></td>
+                {% else %}
+                    <td>{{order.customer.name}}</td>
+                {% endif %}
+                {% if order.customer.phone == None %}
+                    <td></td>
+                {% else %}
+                    <td>{{order.customer.phone}}</td>
+                {% endif %}
+                <td>{{order.get_amount}}</td>
+                <!-- show order items -->
+                <td>
+                    {% for item in order.get_items %}
+                        <p>{{item.product}} ({{item.hotOrCold}}): {{item.qty}}</p>
+                    {% endfor %}
+                </td>
+
+                <td class="status_btns">{{order.status}}
+                    {% if change_status %}
+                    <button class="btn btn-danger btn-sm cancel" type="button" data-orderid="{{order.id}}">Cancel</button>
+                    <button class="btn btn-success btn-sm delivered" type="button" data-orderid="{{order.id}}">Delivered</button>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}

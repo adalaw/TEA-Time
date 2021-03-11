@@ -1,0 +1,118 @@
+{% extends "main/layout.html" %}
+{% load humanize %}
+
+{% block title %}
+    Checkout | TEA Time
+{% endblock %}
+
+{% block body %}
+    
+    <div class="page-title">
+        <div class="container">
+            <h3>Checking out</h3>
+        </div>
+    </div>
+    
+    <!-- order summary -->
+    <div class="container">
+
+        {% if total_items == 0 %}
+
+            <p id="empty_order"><strong>You didn't order anything!</strong></p>
+
+        {% else %}
+
+            <div id="summary">
+
+                <h5 class="subtitle">Order Summary</h5>
+                <div>
+                    <table id="sum_table">
+                        <tr>
+                            <th>Product</th>
+                            <th class="center">Price</th>
+                            <th class="center">Quantity</th>
+                            <th class="right">Subtotal</th>
+                        </tr>
+                        {% for product in products %}
+                            {% if product.data_hot > 0 %}
+                                <tr>
+                                    <td>{{product.name}} (Hot)</td>
+                                    <td class="center">{{product.price}}</td>
+                                    <td class="center">{{product.data_hot}}</td>
+                                    <td class="right">{{product.subtotal|floatformat:2|intcomma}}</td>
+                                </tr>
+                            {% endif %}
+                            {% if product.data_cold > 0 %}
+                                <tr>
+                                    <td>{{product.name}} (Cold)</td>
+                                    <td class="center">{{product.price}}</td>
+                                    <td class="center">{{product.data_cold}}</td>
+                                    <td class="right">{{product.subtotal|floatformat:2|intcomma}}</td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+
+                    </table>
+                </div>
+                <hr style="border-top: 1px solid rgb(39, 185, 39);">
+                <div class="sum">
+                    <strong>Total Items: {{total_items}}</strong>
+                </div>
+                <div class="sum">
+                    <strong>Amount: $ {{amount|floatformat:2|intcomma}}</strong>
+                </div>
+                <br>
+
+                <!-- payment and customer's info -->
+                {% if user.is_authenticated %}
+
+                    {% if user.is_staff %}
+                        <form action="{% url 'confirm' %}" method="POST" name="staffOrderForm">
+                            {% csrf_token %}
+                            <table id="info_table">
+                                {{staffOrderForm.as_table}}
+                            </table>
+
+                            {% for product in products %}
+                                {% if product.data_hot > 0 %}
+                                    <input type="hidden" name="{{product.id}} hot" value="{{product.data_hot}}">
+                                {% endif %}
+                                {% if product.data_cold > 0 %}
+                                    <input type="hidden" name="{{product.id}} cold" value="{{product.data_cold}}">
+                                {% endif %}
+                            {% endfor %}
+
+                            <button class="btn btn-info confirm">Confirm and Pay</button>
+                        </form>
+                        
+                    {% endif %}
+
+                {% else %}
+                    <!-- customers info -->
+                    <h5 class="subtitle">Further Information</h5>
+                    <form action="{% url 'confirm' %}" method="POST" name="orderForm">
+                        {% csrf_token %}
+                        <table id="info_table">
+                            {{orderForm.as_table}}
+                        </table>
+
+                        {% for product in products %}
+                            {% if product.data_hot > 0 %}
+                                <input type="hidden" name="{{product.id}} hot" value="{{product.data_hot}}">
+                            {% endif %}
+                            {% if product.data_cold > 0 %}
+                                <input type="hidden" name="{{product.id}} cold" value="{{product.data_cold}}">
+                            {% endif %}
+                        {% endfor %}
+
+                        <p>*After the payment was completed, you will recieve an order email.</p>
+                        
+                        <button class="btn btn-info confirm">Confirm</button>
+                    </form>
+
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends "main/layout.html" %}
+
+{% block title %}
+    Edit Product
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h3>Edit Product</h3>
+    <hr>
+        
+        <form method="POST" enctype="multipart/form-data"> 
+            {% csrf_token %}
+            <table class="new">
+                {{form.as_table}}
+            </table>
+            <p class="remind">*Please double check the information before it goes public.</p>
+            <button type="submit" class="btn btn-primary" id="create_submit">Update</button> 
+        </form> 
+</div>
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends "main/layout.html" %}
+
+{% block title %}
+    Categories
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h3>Categories</h3>
+        <hr>
+
+        <!-- categories -->
+        <table class="all_products">
+            <tr>
+                <th>Category</th>
+                <th>Status</th>
+                <th>Edit</th>
+            </tr>
+            {% for category in categories %}
+                <tr>
+                    <td>{{category.name}}</td>
+                    {% if category.active %}
+                        <td style="color: green;">Active</td>
+                    {% else %}
+                        <td style="color: red;">Inactive</td>
+                    {% endif %}
+                    <td>
+                        <form action="{% url 'edit_category' category.id %}" method="GET">
+                            <button class="btn btn-warning btn-sm" type="submit">Edit</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+
+        <!-- add new category -->
+        <form method="POST" class="add_category" enctype="multipart/form-data"> 
+            {% csrf_token %}
+            <h5>Add new category</h5>
+            <table class="new">
+                {{form.as_table}}
+            </table>
+            <button type="submit" class="btn btn-primary" id="create_submit">Create</button> 
+        </form>
+
+    </div>
+{% endblock %}

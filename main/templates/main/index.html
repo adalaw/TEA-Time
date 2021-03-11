@@ -1,0 +1,92 @@
+{% extends "main/layout.html" %}
+
+{% block title %}
+    Order | TEA Time
+{% endblock %}
+
+{% block body_class %}
+    index
+{% endblock %}
+
+{% block body %}
+    
+        <div class="page-title">
+            <div class="container">
+                <h3>Make orders</h3>
+            </div>
+        </div>
+
+    
+        <div class="main">
+            <div class="container">
+                <form action="{% url 'checkout' %}" method="POST" name="order">
+                    {% csrf_token %}
+                    {% for category in categories %}
+                        <div class="series">
+                            <button type='button' class="accordion">{{category.name}}</button> <!-- accordion effects are done in main.js -->
+                            <div class="panel">
+                               
+                                <div class="row">
+                                    <div class="col-sm-5">
+                                        <div><img src="{{category.image.url}}"></div>
+                                    </div>
+                                    <div class="col-sm-7">
+                                        <table class="product_table">
+                                            <tr>
+                                                <td></td>
+                                                <td class="header"> $ </td>
+                                                <td class="header">Hot</td>
+                                                <td class="header">Cold</td>
+                                            </tr>
+
+                                            {% for product in category.get_products %}
+
+                                                <tr>
+                                                    <td name="{{product.id}}">{{product.name}}</td>
+                                                    <td class="price_col" data-productid="{{product.id}}">{{product.price}}</td>
+                                                    {% if product.hot %}
+                                                        <td class="input_col">
+                                                            <input name="{{product.id}} hot" type="number" min="1" max="20" step="1" data-productid="{{product.id}}">
+                                                        </td>
+                                                    {% else %}
+                                                        <td>
+                                                            <input name="{{product.id}} hot" type="hidden" data-productid="{{product.id}}">
+                                                        </td>
+                                                    {% endif %}
+                                                    {% if product.cold %}
+                                                        <td class="input_col">
+                                                            <input name="{{product.id}} cold" type="number" min="1" max="20" step="1" data-productid="{{product.id}}">
+                                                        </td>
+                                                    {% else %}
+                                                        <td>
+                                                            <input name="{{product.id}} cold" type="hidden" data-productid="{{product.id}}">
+                                                        </td>
+                                                    {% endif %}
+                                                </tr>
+                                                
+                                            {% endfor %}
+                                            
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+
+                    <!-- order summary -->
+                    <div class="sum">
+                        <span>Total items: </span>
+                        <span id="totalItems">0</span>
+                    </div>
+                    <div class="sum">
+                        <span>Amount: $</span>
+                        <span id="amount">0</span>
+                    </div>
+
+                    <!-- submit form -->
+                    <button class="btn btn-info" id="checkout">Check out >></button>
+                </form>
+            </div>
+        </div>
+
+{% endblock %}

@@ -1,0 +1,50 @@
+{% load static %}
+{% load humanize %}
+<!DOCTYPE html>
+<html>
+    <body>
+        <div style="font-size: 17px;">
+            <p>Thank you for ordering at TEA Time!</p>
+            <p>Please show this QR code to our staff for checking your order.</p>
+            <img src="https://api.qrserver.com/v1/create-qr-code/?data={{order.id}}" alt="" width="140px" height="140px">
+            <br>
+            <p>Here is your order's details:</p>
+            <table>
+                <tr>
+                    <td><p style="font-size: 17px;"><strong>Order No. </strong></p></td>
+                    <td style="padding-left: 10px;"><p style="font-size: 17px;"><strong>{{order.id}}</strong></p></td>
+                </tr>
+                <tr>
+                    <td><p style="font-size: 17px;">Order Time: </p></td>
+                    <td style="padding-left: 10px;"><p style="font-size: 17px;">{{order.date_created}}</p></td>
+                </tr>
+                <tr>
+                    <td><p style="font-size: 17px;">Store: </p></td>
+                    <td style="padding-left: 10px;"><p style="font-size: 17px;">{{order.store}}</p></td>
+                </tr>
+                <tr>
+                    <td><p style="font-size: 17px;">Stay/Takeaway? </p></td>
+                    <td style="padding-left: 10px;"><p style="font-size: 17px;">{{order.stay}}</p></td>
+                </tr>
+                <tr>
+                    <td><p style="font-size: 17px;"><strong>Total Items: </strong></p></td>
+                    <td style="padding-left: 10px;"><p style="font-size: 17px;"><strong>{{order.get_total_items}}</strong></p></td>
+                </tr>
+                <tr>
+                    <td><p style="font-size: 17px;"><strong>Amount:</strong></p></td>
+                    <td style="padding-left: 10px;"><p style="font-size: 17px;"><strong>$ {{order.get_amount|floatformat:2|intcomma}}</strong></p></td>
+                </tr>
+            </table>
+            <br>
+            
+            <hr>
+
+            <p>Order Items:</p>
+            
+            {% for item in order.get_items %}
+            <p>{{item.product.name}} ({{item.hotOrCold}}) * {{item.qty}}</p>
+            {% endfor %}
+
+        </div>
+    </body>
+</html>
